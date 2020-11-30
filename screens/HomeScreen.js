@@ -21,38 +21,39 @@ export default class HomeScreen extends React.Component{
         }
     }
 
-    getWord= async(word)=>{
+    getWord = (word)=>{
         var searchKeyword = word.toLowerCase()
         var url = "https://rupinwhitehatjr.github.io/dictionary/" + searchKeyword + ".json"
 
-        const data = await fetch(url);
-        if (data.status === 200) {
-            return data.json;
-        }
-        else {
-            return null;
-        }
-        const response = undefined;
-        var responseObject = response;
-        // var word = responseObject.word
-        // var lexicalCategory = responseObject.results[0].lexicalEntries[0].lexicalCategory.text
-        if (responseObject) {
-            var wordData = responseObject.definitions[0];
-            var definition = wordData.description;
-            var lexicalCategory = wordData.wordType;
-
-            this.setState({
-                "word": this.state.text,
-                "defination": definition,
-                "lexicalCategory": lexicalCategory
-            });
-        }
-        else {
-            this.setState({
-                "word": this.state.text,
-                "defination": "NOT FOUND"
-            });
-        }
+        return fetch(url)
+        .then((data) => {
+            if(data.status === 200){
+                return data.json()
+            }
+            else{
+                return null
+            }
+        })  
+        .then((response) => {
+            var responseObject = response
+            if(responseObject)
+            {
+                var wordData = responseObject.definitions[0]
+                var definition = wordData.description
+                var lexicalCategor = wordData.wordType
+                this.setState({
+                    "word" : this.state.text,
+                    "defination" : definition,
+                    "lexicalCategory" : lexicalCategor 
+                })
+            }
+            else{
+                this.setState({
+                    "word" : this.state.text, 
+                    "defination" :"Not Found",                
+                  });    
+            }
+        }) 
     }
 
     render(){
